@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Add BOM Entry{% endblock %}
+{% block content %}
+<h2 class="page-title">Add BOM Entry</h2>
+<div class="card">
+<form method="POST">
+  <div class="form-group"><label>Product (Finished Good)</label>
+    <select name="product_id" required>
+      <option value="">-- Select Product --</option>
+      {% for p in products %}
+      <option value="{{ p.product_id }}">{{ p.product_name }}</option>
+      {% endfor %}
+    </select></div>
+  <div class="form-group"><label>Material Required</label>
+    <select name="material_id" required>
+      <option value="">-- Select Material --</option>
+      {% for m in materials %}
+      <option value="{{ m.material_id }}">{{ m.material_name }} (Stock: {{ m.stock }})</option>
+      {% endfor %}
+    </select></div>
+  <div class="form-group"><label>Quantity Required per Product</label>
+    <input type="number" name="quantity_required" required min="1" value="1"></div>
+  <button type="submit" class="btn btn-primary">Add to BOM</button>
+  <a href="{{ url_for('bom') }}" class="btn btn-warning">Cancel</a>
+</form>
+</div>
+{% endblock %}

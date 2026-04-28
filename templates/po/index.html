@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Purchase Orders{% endblock %}
+{% block content %}
+<h2 class="page-title">Purchase Orders</h2>
+<a href="{{ url_for('generate_po') }}" class="btn btn-success" style="margin-bottom:15px;display:inline-block">Auto-Generate POs</a>
+<div class="card">
+<table>
+  <tr><th>PO #</th><th>Material</th><th>Qty</th><th>Unit Cost</th><th>Total</th>
+      <th>Status</th><th>Order Date</th><th>Expected Date</th><th>Notes</th><th>Action</th></tr>
+  {% for o in orders %}
+  <tr>
+    <td><strong>#{{ o.po_id }}</strong></td>
+    <td>{{ o.material_name }}</td>
+    <td>{{ o.quantity }} {{ o.unit }}</td>
+    <td>Rs. {{ "%.2f"|format(o.unit_cost|float) }}</td>
+    <td><strong>Rs. {{ "%.2f"|format(o.total_cost|float) }}</strong></td>
+    <td>
+      {% if o.status=='PENDING' %}<span class="badge badge-warning">PENDING</span>
+      {% elif o.status=='RECEIVED' %}<span class="badge badge-ok">RECEIVED</span>
+      {% else %}<span class="badge badge-danger">{{ o.status }}</span>{% endif %}
+    </td>
+    <td>{{ o.order_date }}</td>
+    <td>{{ o.expected_date or '-' }}</td>
+    <td style="font-size:12px;max-width:150px">{{ o.notes }}</td>
+    <td>
+      {% if o.status=='PENDING' %}
+        <a href="{{ url_for('receive_po', id=o.po_id) }}" class="btn btn-success"
+           onclick="return confirm('Mark as RECEIVED? This will update stock automatically!')">Receive</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

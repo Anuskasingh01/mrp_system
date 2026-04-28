@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}MRP System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+  <h1>&#9881; MRP System</h1>
+  <div>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('products') }}">Products</a>
+    <a href="{{ url_for('materials') }}">Materials</a>
+    <a href="{{ url_for('bom') }}">BOM</a>
+    <a href="{{ url_for('mrp_calculate') }}">MRP Calculate</a>
+    <a href="{{ url_for('purchase_orders') }}">Purchase Orders</a>
+  </div>
+</nav>
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}" style="margin-top:15px">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+<footer>MRP System &copy; 2025 &mdash; Mini Project</footer>
+</body>
+</html>

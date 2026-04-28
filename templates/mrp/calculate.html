@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}MRP Calculation{% endblock %}
+{% block content %}
+<h2 class="page-title">MRP Calculation Results</h2>
+{% if total_shortages > 0 %}
+<div class="alert alert-error">
+  <strong>&#9888; Warning!</strong> {{ total_shortages }} material shortage(s) detected. &nbsp;
+  <a href="{{ url_for('generate_po') }}" class="btn btn-success">Auto-Generate Purchase Orders</a>
+</div>
+{% else %}
+<div class="alert alert-success">
+  <strong>&#10004; All Good!</strong> All materials are sufficient for current production demand.
+</div>
+{% endif %}
+<div class="card">
+<table>
+  <tr>
+    <th>Product</th><th>Demand</th><th>Material</th>
+    <th style="text-align:center">Total Needed</th>
+    <th style="text-align:center">In Stock</th>
+    <th style="text-align:center">Shortage</th>
+    <th style="text-align:center">Order Qty*</th>
+    <th style="text-align:right">Est. Cost</th>
+    <th>Status</th>
+  </tr>
+  {% for r in rows %}
+  <tr class="{{ 'shortage-row' if r.has_shortage else '' }}">
+    <td>{{ r.product_name }}</td>
+    <td style="text-align:center">{{ r.demand }}</td>
+    <td>{{ r.material_name }}</td>
+    <td style="text-align:center"><strong>{{ r.total_required }}</strong></td>
+    <td style="text-align:center">{{ r.stock }}</td>
+    <td style="text-align:center;font-weight:bold;color:{{ '#dc3545' if r.has_shortage else '#28a745' }}">
+      {{ r.shortage if r.has_shortage else 0 }}
+    </td>
+    <td style="text-align:center">{{ r.order_qty if r.has_shortage else '-' }}</td>
+    <td style="text-align:right">{{ 'Rs. ' ~ r.total_cost if r.has_shortage else '-' }}</td>
+    <td>
+      {% if r.has_shortage %}<span class="badge badge-danger">SHORTAGE</span>
+      {% elif r.below_reorder %}<span class="badge badge-warning">LOW STOCK</span>
+      {% else %}<span class="badge badge-ok">OK</span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+<p style="font-size:12px;color:#888;margin-top:8px">* Order Qty = Shortage + Safety Stock buffer</p>
+{% endblock %}

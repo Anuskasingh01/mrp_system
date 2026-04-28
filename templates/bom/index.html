@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Bill of Materials{% endblock %}
+{% block content %}
+<h2 class="page-title">Bill of Materials (BOM)</h2>
+<div style="display:flex;gap:15px;align-items:center;margin-bottom:15px;flex-wrap:wrap">
+  <form method="GET" style="display:flex;gap:10px;align-items:center">
+    <label style="font-weight:bold;color:#1B3A6B">Filter by Product:</label>
+    <select name="product_id" onchange="this.form.submit()"
+            style="padding:7px;border:1px solid #ccc;border-radius:5px;font-size:14px">
+      <option value="0">-- All Products --</option>
+      {% for p in products %}
+      <option value="{{ p.product_id }}" {% if selected==p.product_id %}selected{% endif %}>
+        {{ p.product_name }}
+      </option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{{ url_for('add_bom') }}" class="btn btn-primary">+ Add BOM Entry</a>
+</div>
+<div class="card">
+<table>
+  <tr><th>Product</th><th>Material Needed</th><th>Qty / Unit</th><th>Current Stock</th><th>Status</th><th>Action</th></tr>
+  {% for row in bom %}
+  <tr>
+    <td>{{ row.product_name }}</td>
+    <td>{{ row.material_name }}</td>
+    <td style="text-align:center"><strong>{{ row.quantity_required }}</strong> {{ row.unit }}</td>
+    <td style="text-align:center">{{ row.stock }}</td>
+    <td>
+      {% if row.stock >= row.quantity_required %}
+        <span class="badge badge-ok">Sufficient</span>
+      {% else %}
+        <span class="badge badge-danger">Low Stock</span>
+      {% endif %}
+    </td>
+    <td>
+      <a href="{{ url_for('delete_bom', id=row.bom_id) }}" class="btn btn-danger"
+         onclick="return confirm('Remove this BOM entry?')">Remove</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

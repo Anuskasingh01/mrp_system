@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="page-title">Dashboard</h2>
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="number">{{ products }}</div>
+    <div class="label">Products</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ materials }}</div>
+    <div class="label">Raw Materials</div>
+  </div>
+  <div class="stat-card" style="border-top:4px solid #dc3545">
+    <div class="number" style="color:#dc3545">{{ shortages }}</div>
+    <div class="label">Material Shortages</div>
+  </div>
+  <div class="stat-card" style="border-top:4px solid #ffc107">
+    <div class="number" style="color:#856404">{{ pending }}</div>
+    <div class="label">Pending Orders</div>
+  </div>
+</div>
+<div class="card">
+  <h3 style="margin-bottom:15px;color:#1B3A6B">Quick Actions</h3>
+  <a href="{{ url_for('mrp_calculate') }}" class="btn btn-primary">Run MRP Calculation</a>
+  <a href="{{ url_for('generate_po') }}" class="btn btn-success">Generate Purchase Orders</a>
+  <a href="{{ url_for('products') }}" class="btn btn-warning">Manage Products</a>
+</div>
+{% endblock %}

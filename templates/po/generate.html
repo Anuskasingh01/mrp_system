@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Generate Purchase Orders{% endblock %}
+{% block content %}
+<h2 class="page-title">Auto-Generate Purchase Orders</h2>
+<div class="card">
+  <h3 style="margin-bottom:12px;color:#1B3A6B">What will happen?</h3>
+  <p style="margin-bottom:8px;color:#555;line-height:1.7">
+    The system scans all products and their Bill of Materials.<br>
+    For every material that is <strong>short</strong>, it creates a Purchase Order<br>
+    with the exact shortage quantity <strong>plus safety stock buffer</strong>.
+  </p>
+  <br>
+  <form method="POST">
+    <button type="submit" class="btn btn-success" style="font-size:15px;padding:12px 28px">
+      &#9654; Generate Purchase Orders Now
+    </button>
+    <a href="{{ url_for('purchase_orders') }}" class="btn btn-warning" style="margin-left:10px">
+      View Existing POs
+    </a>
+  </form>
+</div>
+{% endblock %}

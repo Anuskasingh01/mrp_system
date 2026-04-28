@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block content %}
+<h2 class="page-title">Edit Product</h2>
+<div class="card">
+<form method="POST">
+  <div class="form-group"><label>Product Name</label>
+    <input type="text" name="product_name" required value="{{ product.product_name }}"></div>
+  <div class="form-group"><label>Product Code</label>
+    <input type="text" name="product_code" required value="{{ product.product_code }}"></div>
+  <div class="form-group"><label>Demand</label>
+    <input type="number" name="demand" required min="0" value="{{ product.demand }}"></div>
+  <div class="form-group"><label>Unit</label>
+    <select name="unit">
+      <option value="pcs" {% if product.unit=='pcs' %}selected{% endif %}>pcs</option>
+      <option value="kg"  {% if product.unit=='kg'  %}selected{% endif %}>kg</option>
+      <option value="litre" {% if product.unit=='litre' %}selected{% endif %}>litre</option>
+    </select></div>
+  <button type="submit" class="btn btn-primary">Update Product</button>
+  <a href="{{ url_for('products') }}" class="btn btn-warning">Cancel</a>
+</form>
+</div>
+{% endblock %}

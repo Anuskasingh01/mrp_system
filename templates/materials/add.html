@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Add Material{% endblock %}
+{% block content %}
+<h2 class="page-title">Add New Material</h2>
+<div class="card">
+<form method="POST">
+  <div class="form-grid">
+    <div class="form-group"><label>Material Name</label>
+      <input type="text" name="material_name" required placeholder="e.g. Wood"></div>
+    <div class="form-group"><label>Material Code</label>
+      <input type="text" name="material_code" placeholder="e.g. MAT-001"></div>
+    <div class="form-group"><label>Current Stock</label>
+      <input type="number" name="stock" required min="0" value="0"></div>
+    <div class="form-group"><label>Reorder Point</label>
+      <input type="number" name="reorder_point" min="0" value="0"></div>
+    <div class="form-group"><label>Safety Stock</label>
+      <input type="number" name="safety_stock" min="0" value="0"></div>
+    <div class="form-group"><label>Unit Cost (Rs.)</label>
+      <input type="number" name="unit_cost" step="0.01" min="0" value="0.00"></div>
+    <div class="form-group"><label>Supplier Name</label>
+      <input type="text" name="supplier_name" placeholder="Supplier Co."></div>
+    <div class="form-group"><label>Lead Time (Days)</label>
+      <input type="number" name="lead_time_days" min="1" value="7"></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Save Material</button>
+  <a href="{{ url_for('materials') }}" class="btn btn-warning">Cancel</a>
+</form>
+</div>
+{% endblock %}

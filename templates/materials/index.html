@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Materials{% endblock %}
+{% block content %}
+<h2 class="page-title">Raw Materials &amp; Stock Levels</h2>
+<a href="{{ url_for('add_material') }}" class="btn btn-primary" style="margin-bottom:15px;display:inline-block">+ Add Material</a>
+<div class="card">
+<table>
+  <tr><th>Code</th><th>Name</th><th>Stock</th><th>Reorder Point</th><th>Safety Stock</th><th>Supplier</th><th>Lead Days</th><th>Actions</th></tr>
+  {% for m in materials %}
+  {% set rc = 'shortage-row' if m.stock == 0 else ('low-stock-row' if m.stock <= m.reorder_point else '') %}
+  <tr class="{{ rc }}">
+    <td>{{ m.material_code }}</td>
+    <td><strong>{{ m.material_name }}</strong></td>
+    <td style="text-align:center;font-weight:bold">{{ m.stock }}</td>
+    <td style="text-align:center">{{ m.reorder_point }}</td>
+    <td style="text-align:center">{{ m.safety_stock }}</td>
+    <td>{{ m.supplier_name }}</td>
+    <td style="text-align:center">{{ m.lead_time_days }}</td>
+    <td><a href="{{ url_for('edit_material', id=m.material_id) }}" class="btn btn-warning">Edit</a></td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+<p style="font-size:13px;color:#666;margin-top:8px">
+  <span style="background:#fde8e8;padding:2px 8px;border-radius:3px">Red</span> = out of stock &nbsp;
+  <span style="background:#fff8dc;padding:2px 8px;border-radius:3px">Yellow</span> = below reorder point
+</p>
+{% endblock %}
